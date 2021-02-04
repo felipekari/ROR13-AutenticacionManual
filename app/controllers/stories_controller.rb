@@ -14,17 +14,21 @@ class StoriesController < ApplicationController
 
   # GET /stories/new
   def new
+    @user = session[:user_id]
     @story = Story.new
   end
 
   # GET /stories/1/edit
   def edit
+    @user = session[:user_id]
   end
 
   # POST /stories
   # POST /stories.json
   def create
+    @user = session[:user_id]
     @story = Story.new(story_params)
+    @story.user_id = @user
 
     respond_to do |format|
       if @story.save
@@ -69,6 +73,6 @@ class StoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def story_params
-      params.require(:story).permit(:title, :picture, :content)
+      params.require(:story).permit(:title, :picture, :content, :user_id)
     end
 end
